@@ -7,10 +7,10 @@ on:
       - "powerbi/**"
       - ".github/workflows/powerbi-visual.yml"
   push:
-    branches:
-      - main
-    paths-ignore:
-      - "release/**"
+    branches: [main]
+    paths:
+      - "powerbi/**"
+      - ".github/workflows/powerbi-visual.yml"
 
 permissions:
   contents: write

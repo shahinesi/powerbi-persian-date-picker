@@ -1,19 +1,32 @@
 # ADR 0005 — Product default branch with separate upstream tracking
 
-- **Status:** Accepted
+- **Status:** Accepted (updated)
 - **Date:** 2026-08-19
 
 ## Context
 
 The repository must remain a fork for attribution/upstream history, while its landing page and releases should represent the Power BI product rather than the upstream React package.
 
+The repository also needs a minimal long-lived branch model that does not mix product history with a clean upstream mirror.
+
 ## Decision
 
-Use `master` as the product/default branch and `upstream-sync` as a clean tracking branch for upstream `master`. Integrate upstream changes deliberately from `upstream-sync` into a temporary product PR.
+Use exactly two intended long-lived branches:
+
+```text
+main           product/default branch
+upstream-sync  clean upstream tracking branch
+```
+
+`upstream-sync` tracks the parent repository's default branch. Upstream changes are reviewed and deliberately integrated into `main`; they are not blindly synchronized into the product branch.
+
+Temporary feature/docs/fix/integration branches may exist while work is active, but should be deleted after merge.
 
 ## Consequences
 
-- GitHub landing page shows the product README.
-- Fork relationship remains visible and healthy.
-- Upstream updates are explicit product changes rather than blind synchronization.
-- `master` cannot be assumed to be a mirror of the parent.
+- GitHub landing page should use `main` and show the Power BI product README.
+- Fork relationship and upstream attribution remain visible.
+- `upstream-sync` can be reset to the upstream branch without contaminating product history.
+- Upstream updates become explicit product changes with review and CI.
+- `main` must never be assumed to be a mirror of the parent.
+- Long-lived branch clutter is avoided.

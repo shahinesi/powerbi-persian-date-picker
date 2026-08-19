@@ -10,14 +10,14 @@ release/PersianDatePicker.pbiviz
 
 ## Current release flow
 
-1. PR targets `master`.
+1. Product PR targets `main`.
 2. CI installs dependencies.
 3. Typecheck runs.
 4. Date conversion tests run.
 5. Production dependency audit runs.
 6. `pbiviz package` produces the PBIVIZ.
 7. CI uploads the PBIVIZ as a workflow artifact.
-8. After code is on `master`, the workflow copies the generated package to `release/PersianDatePicker.pbiviz` and commits it.
+8. After code is on `main`, the workflow copies the generated package to `release/PersianDatePicker.pbiviz` and commits it when the binary changed.
 
 ## Versioning
 
@@ -37,10 +37,11 @@ Power BI package versions use four numeric components; map semantic versions con
 - [ ] automated gates green.
 - [ ] Desktop manual acceptance complete for behavior changes.
 - [ ] no new privilege without security review.
-- [ ] `release/PersianDatePicker.pbiviz` updated after merge.
+- [ ] `release/PersianDatePicker.pbiviz` updated after merge when required.
 - [ ] direct download works.
 - [ ] GitHub Pages still deploys.
+- [ ] temporary release/integration branch removed after merge.
 
 ## Rollback
 
-If a release is defective, revert the product commit on `master`, let CI rebuild the PBIVIZ, and document the rollback in the changelog. Do not manually replace the release file with an untraceable binary.
+If a release is defective, revert the product commit on `main`, let CI rebuild the PBIVIZ, and document the rollback in the changelog. Do not manually replace the release file with an untraceable binary.
