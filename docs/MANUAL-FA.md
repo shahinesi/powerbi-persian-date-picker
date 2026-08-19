@@ -132,7 +132,7 @@ Sales[SaleDate]   (Date/Time)
 
 فایل آماده:
 
-https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/main/release/PersianDatePicker.pbiviz
+https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/master/release/PersianDatePicker.pbiviz
 
 نام فایل:
 
