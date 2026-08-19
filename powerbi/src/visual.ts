@@ -15,10 +15,10 @@ import VisualDialogPositionType = powerbi.VisualDialogPositionType;
 
 const FILTER_OBJECT_NAME = "general";
 const FILTER_PROPERTY_NAME = "filter";
+const SVG_NAMESPACE = "http://www.w3.org/2000/svg";
 
 export class Visual implements IVisual {
     private readonly host: IVisualHost;
-    private readonly element: HTMLElement;
     private readonly pickerButton: HTMLButtonElement;
     private readonly pickerText: HTMLSpanElement;
     private readonly clearButton: HTMLButtonElement;
@@ -26,12 +26,16 @@ export class Visual implements IVisual {
     private selectedStartIso: string | null = null;
     private isApplyingFilter = false;
 
-    constructor(options: VisualConstructorOptions) {
-        this.host = options.host;
-        this.element = options.element;
+    constructor(options?: VisualConstructorOptions) {
+        if (!options) {
+            throw new Error("VisualConstructorOptions are required to initialize Persian Date Picker.");
+        }
 
-        this.element.classList.add("pdp-visual");
-        this.element.setAttribute("dir", "rtl");
+        this.host = options.host;
+        const element = options.element;
+
+        element.classList.add("pdp-visual");
+        element.setAttribute("dir", "rtl");
 
         this.pickerButton = document.createElement("button");
         this.pickerButton.type = "button";
@@ -42,8 +46,7 @@ export class Visual implements IVisual {
         const icon = document.createElement("span");
         icon.className = "pdp-calendar-icon";
         icon.setAttribute("aria-hidden", "true");
-        icon.innerHTML =
-            '<svg viewBox="0 0 24 24" width="18" height="18" focusable="false"><path d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h1V3a1 1 0 0 1 1-1Zm12 8H5v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9ZM6 6a1 1 0 0 0-1 1v1h14V7a1 1 0 0 0-1-1H6Z" fill="currentColor"/></svg>';
+        icon.appendChild(this.createCalendarSvg());
 
         this.pickerText = document.createElement("span");
         this.pickerText.className = "pdp-trigger-text";
@@ -60,7 +63,7 @@ export class Visual implements IVisual {
         });
 
         this.pickerButton.append(icon, this.pickerText);
-        this.element.append(this.pickerButton, this.clearButton);
+        element.append(this.pickerButton, this.clearButton);
         this.render();
     }
 
@@ -234,5 +237,23 @@ export class Visual implements IVisual {
         }
 
         return { table, column };
+    }
+
+    private createCalendarSvg(): SVGSVGElement {
+        const svg = document.createElementNS(SVG_NAMESPACE, "svg");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("width", "18");
+        svg.setAttribute("height", "18");
+        svg.setAttribute("focusable", "false");
+
+        const path = document.createElementNS(SVG_NAMESPACE, "path");
+        path.setAttribute(
+            "d",
+            "M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h1V3a1 1 0 0 1 1-1Zm12 8H5v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9ZM6 6a1 1 0 0 0-1 1v1h14V7a1 1 0 0 0-1-1H6Z",
+        );
+        path.setAttribute("fill", "currentColor");
+        svg.appendChild(path);
+
+        return svg;
     }
 }
