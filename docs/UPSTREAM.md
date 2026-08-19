@@ -1,72 +1,91 @@
-# Upstream and Fork Strategy
+# Upstream Synchronization Strategy
 
-## Objective
+## Goal
 
-Make this fork look and behave like the **Persian Date Picker for Power BI** product by default while preserving a clean, auditable relationship with `shahabyazdi/react-multi-date-picker`.
+Keep this repository recognizable as its own Power BI product while preserving a clean relationship with the upstream React date-picker project.
 
-## Branch policy
+## Intended branch structure
 
-### `master` — product/default branch
-
-This is the user-facing branch. It contains:
-
-- Power BI integration;
-- project README/docs;
-- CI/release automation;
-- GitHub Pages site;
-- upstream source plus deliberate upstream updates.
-
-GitHub currently uses `master` as this repository's default branch, so the repository landing page displays the product README.
-
-### `upstream-sync` — upstream tracking branch
-
-This branch is reserved for tracking the upstream repository's `master` without product-specific commits.
-
-At the time this strategy was established, upstream `master` was:
+Only two long-lived branches are required:
 
 ```text
-ad739ff1a5e3a3da42abb6a0c611533a4c327f73
+main           product/default branch
+upstream-sync  clean upstream tracking branch
 ```
 
-and `upstream-sync` was created at that exact commit.
+`main` contains the Power BI layer, documentation, site, CI, release artifacts, and any product-specific integration.
 
-## Safe sync workflow
+`upstream-sync` tracks:
 
-Using Git locally:
+```text
+https://github.com/shahabyazdi/react-multi-date-picker
+```
+
+and should not contain product-only commits.
+
+## Why not synchronize upstream directly into main?
+
+The GitHub **Sync fork** button is optimized for a fork whose default branch is intended to mirror the upstream default branch. This repository has evolved into a product with additional files and behavior.
+
+Using `upstream-sync` gives maintainers a controlled review point:
+
+```text
+upstream/master
+      ↓
+upstream-sync
+      ↓ review / tests / conflict resolution
+main
+```
+
+## Updating upstream-sync locally
 
 ```bash
 git remote add upstream https://github.com/shahabyazdi/react-multi-date-picker.git
 git fetch upstream
-
-git checkout upstream-sync
+git switch upstream-sync
 git reset --hard upstream/master
-git push --force-with-lease origin upstream-sync
-
-git checkout -b chore/integrate-upstream master
-git merge upstream-sync
-# resolve only intentional conflicts, then run all product gates
-git push origin chore/integrate-upstream
+git push origin upstream-sync --force-with-lease
 ```
 
-Open a PR from `chore/integrate-upstream` to `master` and validate the Power BI product before merging.
+The force is intentional only for `upstream-sync`, because that branch is a tracking mirror.
 
-## Why not blindly press “Sync fork” on `master`?
+## Integrating an upstream change into main
 
-GitHub can sync a fork branch from upstream, but when the product branch has unique commits, conflicts may need resolution. Our README, workflows, and product layer intentionally diverge. Using `upstream-sync` makes upstream review explicit and prevents an upstream sync from accidentally becoming a product release.
+Do not blindly merge every upstream commit if it is irrelevant to the Power BI product.
 
-Official GitHub reference: https://docs.github.com/pull-requests/how-tos/work-with-forks/syncing-a-fork
+Recommended workflow:
 
-## Fork banner
+1. refresh `upstream-sync`;
+2. compare `upstream-sync` with the upstream-derived files on `main`;
+3. identify useful/security/compatibility changes;
+4. create a temporary integration branch locally if needed;
+5. resolve conflicts deliberately;
+6. run Power BI quality gates;
+7. merge the reviewed result into `main`;
+8. remove the temporary integration branch.
 
-GitHub will continue to show that this repository is forked from the upstream project. That is desirable: it preserves attribution and the fork network.
+## Quality gates after upstream integration
 
-If the goal were to remove the fork relationship entirely, the repository would have to be detached/duplicated as an independent repository. That would sacrifice the normal fork relationship and is **not** recommended for this project.
+```bash
+cd powerbi
+npm install
+npm run typecheck
+npm test
+npm run audit:prod
+npm run package
+```
 
-## Conflict policy
+CodeQL must also pass.
 
-When upstream changes overlap product documentation or integration:
+## Long-lived branch policy
 
-1. preserve upstream license/attribution;
-2. preserve product behavior on `master`;
-3. prefer moving Power BI changes back under `powerbi/` rather than permanently patching upstream files;
-4. document non-trivial choices in an ADR.
+Do not keep feature, documentation or release branches after their work is merged.
+
+The intended steady state is:
+
+```text
+main
+upstream-sync
+```
+
+Temporary branches are acceptable only during active work and should be deleted after merge.

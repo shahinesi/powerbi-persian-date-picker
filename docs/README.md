@@ -1,37 +1,42 @@
-# Documentation Index
+# Documentation
 
-This directory contains the product, architecture, operations, and governance documentation for Persian Date Picker for Power BI.
+## For Persian end users
 
-## User documentation
+1. [راهنمای کامل فارسی — از صفر تا صد](MANUAL-FA.md)
+2. [Data Model & Date Preparation](DATA-MODEL.md)
+3. [Installation](INSTALLATION.md)
+4. [Usage](USAGE.md)
+5. [Troubleshooting](TROUBLESHOOTING.md)
+6. [FAQ](FAQ.md)
+7. [Web documentation](https://shahinesi.github.io/powerbi-persian-date-picker/docs.html)
 
-- [`INSTALLATION.md`](INSTALLATION.md) — importing and deploying the PBIVIZ.
-- [`USAGE.md`](USAGE.md) — field requirements and user behavior.
-- [`COMPATIBILITY.md`](COMPATIBILITY.md) — supported Power BI environments and known constraints.
-- [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) — common failures and diagnostics.
-- [`FAQ.md`](FAQ.md) — short answers to common questions.
+## Product and architecture
 
-## Engineering documentation
+- [Architecture](ARCHITECTURE.md)
+- [Design document](DESIGN.md)
+- [Compatibility](COMPATIBILITY.md)
+- [Accessibility](ACCESSIBILITY.md)
+- [Threat model](THREAT-MODEL.md)
+- [Quality gates](QUALITY-GATES.md)
+- [Roadmap](ROADMAP.md)
+- [Product changelog](CHANGELOG.md)
 
-- [`ARCHITECTURE.md`](ARCHITECTURE.md) — system boundaries and runtime flow.
-- [`DESIGN.md`](DESIGN.md) — detailed product/technical design.
-- [`DEVELOPMENT.md`](DEVELOPMENT.md) — development setup and workflow.
-- [`TESTING.md`](TESTING.md) — test strategy.
-- [`QUALITY-GATES.md`](QUALITY-GATES.md) — required CI/release gates.
-- [`ACCESSIBILITY.md`](ACCESSIBILITY.md) — RTL, keyboard, and visual requirements.
-- [`THREAT-MODEL.md`](THREAT-MODEL.md) — threats, assets, and mitigations.
+## Maintainers and contributors
 
-## Operations and maintenance
+- [Development](DEVELOPMENT.md)
+- [Testing](TESTING.md)
+- [Releasing](RELEASING.md)
+- [Governance](GOVERNANCE.md)
+- [Upstream synchronization](UPSTREAM.md)
+- [Licenses and attribution](LICENSES.md)
+- [Architecture Decision Records](adr/README.md)
 
-- [`RELEASING.md`](RELEASING.md) — versioning, packaging, and artifact publication.
-- [`UPSTREAM.md`](UPSTREAM.md) — fork/upstream branch strategy.
-- [`GOVERNANCE.md`](GOVERNANCE.md) — decision and maintenance model.
-- [`ROADMAP.md`](ROADMAP.md) — planned direction.
-- [`LICENSES.md`](LICENSES.md) — licensing and attribution.
+## Root-level project policies
 
-## Architecture decisions
-
-See [`adr/README.md`](adr/README.md) for the ADR index.
-
-## Documentation rule
-
-Behavior-changing PRs should update the relevant document in the same PR. Architecture changes should also add or supersede an ADR.
+- [README](../README.md)
+- [Contributing](../CONTRIBUTING.md)
+- [Security](../SECURITY.md)
+- [Support](../SUPPORT.md)
+- [Code of Conduct](../CODE_OF_CONDUCT.md)
+- [Notice](../NOTICE.md)
+- [License](../LICENSE)

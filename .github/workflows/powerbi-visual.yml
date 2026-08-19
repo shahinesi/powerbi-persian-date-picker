@@ -2,12 +2,13 @@ name: Power BI Visual
 
 on:
   pull_request:
+    branches: [main]
     paths:
       - "powerbi/**"
       - ".github/workflows/powerbi-visual.yml"
   push:
     branches:
-      - master
+      - main
     paths-ignore:
       - "release/**"
 
@@ -23,10 +24,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20.19.0"
 
@@ -53,7 +54,7 @@ jobs:
           if-no-files-found: error
 
       - name: Publish downloadable PBIVIZ to repository
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         working-directory: .
         shell: bash
         run: |
