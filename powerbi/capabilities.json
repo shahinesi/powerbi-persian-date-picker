@@ -5,12 +5,7 @@
       "displayName": "Date",
       "name": "date",
       "kind": "Grouping",
-      "description": "Gregorian Date or DateTime column to filter.",
-      "requiredTypes": [
-        {
-          "dateTime": true
-        }
-      ]
+      "description": "Gregorian Date or DateTime column to filter. The visual validates Date/DateTime at runtime."
     }
   ],
   "dataViewMappings": [
