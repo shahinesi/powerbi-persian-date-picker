@@ -2,12 +2,12 @@ name: Power BI Visual
 
 on:
   pull_request:
-    branches: [main]
+    branches: [master]
     paths:
       - "powerbi/**"
       - ".github/workflows/powerbi-visual.yml"
   push:
-    branches: [main]
+    branches: [master]
     paths:
       - "powerbi/**"
       - ".github/workflows/powerbi-visual.yml"
@@ -54,7 +54,7 @@ jobs:
           if-no-files-found: error
 
       - name: Publish downloadable PBIVIZ to repository
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         working-directory: .
         shell: bash
         run: |
