@@ -23,6 +23,7 @@
 
 ## Maintainers and contributors
 
+- [Repository administration setup](REPOSITORY-SETUP.md)
 - [Development](DEVELOPMENT.md)
 - [Testing](TESTING.md)
 - [Releasing](RELEASING.md)
