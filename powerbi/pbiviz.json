@@ -1,0 +1,24 @@
+{
+  "visual": {
+    "name": "PersianDatePicker",
+    "displayName": "Persian Date Picker",
+    "guid": "PersianDatePicker9F7A2D1B6C4E4F2A8D3B1C5E7A9F0D2C",
+    "visualClassName": "Visual",
+    "version": "1.0.0.0",
+    "description": "A clean Persian (Jalali) date picker for Power BI that applies Gregorian date filters to the selected Date field.",
+    "supportUrl": "https://github.com/shahinesi/powerbi-persian-date-picker/issues",
+    "gitHubUrl": "https://github.com/shahinesi/powerbi-persian-date-picker"
+  },
+  "apiVersion": "5.11.1",
+  "author": {
+    "name": "Shahin Eskandari",
+    "email": "imshahineskandari@gmail.com"
+  },
+  "assets": {
+    "icon": "assets/icon.png"
+  },
+  "style": "style/visual.less",
+  "capabilities": "capabilities.json",
+  "dependencies": null,
+  "stringResources": []
+}

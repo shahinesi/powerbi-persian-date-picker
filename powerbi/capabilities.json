@@ -1,0 +1,55 @@
+{
+  "privileges": [],
+  "dataRoles": [
+    {
+      "displayName": "Date",
+      "name": "date",
+      "kind": "Grouping",
+      "description": "Gregorian Date or DateTime column to filter.",
+      "requiredTypes": [
+        {
+          "dateTime": true
+        }
+      ]
+    }
+  ],
+  "dataViewMappings": [
+    {
+      "conditions": [
+        {
+          "date": {
+            "max": 1
+          }
+        }
+      ],
+      "categorical": {
+        "categories": {
+          "for": {
+            "in": "date"
+          },
+          "dataReductionAlgorithm": {
+            "top": {
+              "count": 1
+            }
+          }
+        }
+      }
+    }
+  ],
+  "objects": {
+    "general": {
+      "displayName": "Filter",
+      "properties": {
+        "filter": {
+          "type": {
+            "filter": true
+          }
+        }
+      }
+    }
+  },
+  "supportsLandingPage": true,
+  "supportsEmptyDataView": true,
+  "supportsSynchronizingFilterState": true,
+  "supportsKeyboardFocus": true
+}

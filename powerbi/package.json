@@ -1,0 +1,28 @@
+{
+  "name": "powerbi-persian-date-picker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production-ready Persian (Jalali) date picker custom visual for Power BI.",
+  "license": "MIT",
+  "scripts": {
+    "start": "pbiviz start",
+    "package": "pbiviz package",
+    "typecheck": "tsc --noEmit",
+    "verify": "npm run typecheck && npm run package",
+    "audit:prod": "npm audit --omit=dev --audit-level=high"
+  },
+  "dependencies": {
+    "powerbi-models": "^1.15.0",
+    "powerbi-visuals-api": "5.11.1",
+    "react": "18.2.0",
+    "react-date-object": "^2.1.8",
+    "react-dom": "18.2.0",
+    "react-multi-date-picker": "4.5.2"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.3",
+    "@types/react-dom": "18.3.0",
+    "powerbi-visuals-tools": "7.2.1",
+    "typescript": "5.5.4"
+  }
+}
