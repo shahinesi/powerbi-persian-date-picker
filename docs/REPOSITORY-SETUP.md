@@ -9,7 +9,7 @@ This document records the intended GitHub repository settings for maintainers. T
 Only these two branches should remain:
 
 ```text
-main           product / default branch
+master         product / default branch
 upstream-sync  clean upstream tracking branch
 ```
 
@@ -19,26 +19,20 @@ Temporary branches such as feature, fix, docs, release, or integration branches 
 
 ### 1. Default branch
 
-Set:
+Keep:
 
 ```text
-Default branch = main
+Default branch = master
 ```
 
-GitHub path:
-
-```text
-Repository → Settings → General → Default branch
-```
-
-Change from `master` to `main` before deleting `master`.
+The repository already uses `master` as its GitHub default branch, so no default-branch migration is required.
 
 ### 2. Remove legacy temporary branches
 
-After `main` is the default branch, delete:
+Delete:
 
 ```text
-master
+main
 docs-professional
 powerbi-visual
 ```
@@ -46,7 +40,7 @@ powerbi-visual
 Keep:
 
 ```text
-main
+master
 upstream-sync
 ```
 
@@ -82,7 +76,7 @@ The deployment workflow is:
 .github/workflows/pages.yml
 ```
 
-and publishes the static `site/` directory.
+and publishes the static `site/` directory from `master`.
 
 ### 5. Repository website/homepage
 
@@ -125,9 +119,9 @@ rtl
 
 Topics are discovery metadata only and do not affect the fork relationship.
 
-## Recommended main-branch protection
+## Recommended master-branch protection
 
-For a public project, consider a GitHub ruleset for `main` that:
+For a public project, consider a GitHub ruleset for `master` that:
 
 - blocks force pushes;
 - blocks deletion;
@@ -139,7 +133,7 @@ Do not configure a required check that never runs for documentation-only changes
 
 ## Upstream safety
 
-The fork relationship remains intact. Changing the default branch to `main`, enabling Pages, changing the Website field, or deleting product-only temporary branches does **not** modify the upstream repository.
+The fork relationship remains intact. Keeping `master` as the default branch, enabling Pages, changing the Website field, or deleting product-only temporary branches does **not** modify the upstream repository.
 
 Upstream synchronization is managed through `upstream-sync`; see [`UPSTREAM.md`](UPSTREAM.md).
 
@@ -147,13 +141,13 @@ Upstream synchronization is managed through `upstream-sync`; see [`UPSTREAM.md`]
 
 After repository setup:
 
-- [ ] default branch is `main`;
-- [ ] branch list contains only `main` and `upstream-sync`;
+- [ ] default branch is `master`;
+- [ ] branch list contains only `master` and `upstream-sync`;
 - [ ] GitHub Pages is enabled and homepage loads;
 - [ ] `docs.html` loads;
 - [ ] repository Website points to this project's Pages site;
 - [ ] Issues are enabled;
 - [ ] issue forms are available;
 - [ ] auto-delete merged branches is enabled;
-- [ ] direct PBIVIZ download from `main/release/` works;
+- [ ] direct PBIVIZ download from `master/release/` works;
 - [ ] upstream attribution remains visible.
