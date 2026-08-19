@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://shahinesi.github.io/powerbi-persian-date-picker/

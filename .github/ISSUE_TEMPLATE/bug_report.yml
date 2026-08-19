@@ -1,0 +1,60 @@
+name: Bug report
+description: Report a reproducible problem in the Power BI visual
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Do not include confidential report data or security vulnerabilities here.
+  - type: input
+    id: environment
+    attributes:
+      label: Power BI environment
+      description: Desktop, Service, or another host; include Desktop version when relevant.
+      placeholder: "Power BI Desktop 2.x / Power BI Service"
+    validations:
+      required: true
+  - type: dropdown
+    id: field_type
+    attributes:
+      label: Bound field type
+      options:
+        - Date
+        - DateTime
+        - Other / invalid field
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Use synthetic data where possible.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Additional diagnostics
+      description: Screenshots, console output, or minimal sample dates. Remove sensitive data.
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I checked the troubleshooting guide.
+          required: true
+        - label: This is not a security vulnerability.
+          required: true
