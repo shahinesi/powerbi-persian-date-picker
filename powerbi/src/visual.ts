@@ -179,26 +179,42 @@ export class Visual implements IVisual {
         this.selectedStartIso = null;
         this.isApplyingFilter = true;
 
-        // Power BI's documented clear-filter runtime contract accepts null,
-        // while the current TypeScript host signature does not include null.
+        // Power BI clears a persisted visual filter by merging null into the
+        // filter property. The current TypeScript signature does not expose null.
         this.host.applyJsonFilter(
             null as unknown as powerbi.IFilter,
             FILTER_OBJECT_NAME,
             FILTER_PROPERTY_NAME,
-            FilterAction.remove,
+            FilterAction.merge,
         );
 
         this.render();
     }
 
     private restoreStartIsoFromFilters(filters: powerbi.IFilter[] | undefined): string | null {
-        const advanced = filters?.find((filter) =>
-            Array.isArray((filter as IAdvancedFilter).conditions),
-        ) as IAdvancedFilter | undefined;
+        if (!this.target) {
+            return null;
+        }
 
-        const firstCondition = advanced?.conditions?.[0];
-        return firstCondition && typeof firstCondition.value === "string"
-            ? firstCondition.value
+        const advanced = filters?.find((filter) => {
+            const candidate = filter as IAdvancedFilter;
+            if (!Array.isArray(candidate.conditions)) {
+                return false;
+            }
+
+            const target = candidate.target as IFilterColumnTarget;
+            return (
+                target?.table === this.target?.table &&
+                target?.column === this.target?.column
+            );
+        }) as IAdvancedFilter | undefined;
+
+        const startCondition = advanced?.conditions?.find(
+            (condition) => condition.operator === "GreaterThanOrEqual",
+        );
+
+        return startCondition && typeof startCondition.value === "string"
+            ? startCondition.value
             : null;
     }
 
