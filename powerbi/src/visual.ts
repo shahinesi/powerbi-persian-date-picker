@@ -25,6 +25,7 @@ export class Visual implements IVisual {
     private target: IFilterColumnTarget | null = null;
     private selectedStartIso: string | null = null;
     private isApplyingFilter = false;
+    private hasInvalidDateField = false;
 
     constructor(options?: VisualConstructorOptions) {
         if (!options) {
@@ -69,7 +70,10 @@ export class Visual implements IVisual {
 
     public update(options: VisualUpdateOptions): void {
         const category = options.dataViews?.[0]?.categorical?.categories?.[0];
-        this.target = category ? this.createFilterTarget(category) : null;
+        const isDateField = Boolean(category?.source.type?.dateTime);
+
+        this.hasInvalidDateField = Boolean(category) && !isDateField;
+        this.target = category && isDateField ? this.createFilterTarget(category) : null;
 
         if (!this.isApplyingFilter) {
             this.selectedStartIso = this.restoreStartIsoFromFilters(options.jsonFilters);
@@ -84,11 +88,13 @@ export class Visual implements IVisual {
         const persianValue = gregorianIsoToPersian(this.selectedStartIso);
 
         this.pickerButton.disabled = !hasTarget;
-        this.pickerText.textContent = !hasTarget
-            ? "ابتدا فیلد تاریخ را انتخاب کنید"
-            : persianValue
-              ? persianValue.format("YYYY/MM/DD")
-              : "انتخاب تاریخ";
+        this.pickerText.textContent = this.hasInvalidDateField
+            ? "فیلد باید Date یا DateTime باشد"
+            : !hasTarget
+              ? "ابتدا فیلد تاریخ را انتخاب کنید"
+              : persianValue
+                ? persianValue.format("YYYY/MM/DD")
+                : "انتخاب تاریخ";
 
         this.clearButton.hidden = !hasTarget || !this.selectedStartIso;
     }
