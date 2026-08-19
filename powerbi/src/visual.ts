@@ -151,7 +151,7 @@ export class Visual implements IVisual {
                 operator: "LessThan",
                 value: result.endExclusiveIso,
             },
-        );
+        ).toJSON() as IAdvancedFilter;
 
         this.selectedStartIso = result.startInclusiveIso;
         this.isApplyingFilter = true;
