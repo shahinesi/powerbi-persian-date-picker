@@ -4,11 +4,11 @@
 
 **انتخاب تاریخ شمسی برای کاربر؛ فیلتر واقعی Gregorian روی مدل Power BI.**
 
-[راهنمای سریع فارسی](#راهنمای-سریع-فارسی) · [راهنمای کامل فارسی](docs/MANUAL-FA.md) · [Installation](docs/INSTALLATION.md) · [Data Model](docs/DATA-MODEL.md) · [Architecture](docs/ARCHITECTURE.md) · [Download PBIVIZ](https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/main/release/PersianDatePicker.pbiviz) · [Website](https://shahinesi.github.io/powerbi-persian-date-picker/)
+[راهنمای سریع فارسی](#راهنمای-سریع-فارسی) · [راهنمای کامل فارسی](docs/MANUAL-FA.md) · [Installation](docs/INSTALLATION.md) · [Data Model](docs/DATA-MODEL.md) · [Architecture](docs/ARCHITECTURE.md) · [Download PBIVIZ](https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/master/release/PersianDatePicker.pbiviz) · [Website](https://shahinesi.github.io/powerbi-persian-date-picker/)
 
-[![Power BI Visual](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/powerbi-visual.yml/badge.svg?branch=main)](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/powerbi-visual.yml)
-[![CodeQL](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/codeql-analysis.yml)
-[![Pages](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/pages.yml)
+[![Power BI Visual](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/powerbi-visual.yml/badge.svg?branch=master)](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/powerbi-visual.yml)
+[![CodeQL](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/codeql-analysis.yml)
+[![Pages](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/pages.yml/badge.svg?branch=master)](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/pages.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 </div>
@@ -75,7 +75,7 @@ Date/Time
 
 فایل آماده را دانلود کنید:
 
-**[Download PersianDatePicker.pbiviz](https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/main/release/PersianDatePicker.pbiviz)**
+**[Download PersianDatePicker.pbiviz](https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/master/release/PersianDatePicker.pbiviz)**
 
 سپس در Power BI Desktop:
 
@@ -195,7 +195,7 @@ Visual فیلتر خودش را از Power BI Filter State می‌خواند. ب
 
 ### Download ready-to-use PBIVIZ
 
-**[PersianDatePicker.pbiviz](https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/main/release/PersianDatePicker.pbiviz)**
+**[PersianDatePicker.pbiviz](https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/master/release/PersianDatePicker.pbiviz)**
 
 In Power BI Desktop:
 
@@ -319,11 +319,11 @@ The downloadable file under `release/` is produced by the repository pipeline.
 The intended long-term repository structure is deliberately minimal:
 
 ```text
-main           → product branch / default branch
+master         → product branch / default branch
 upstream-sync  → clean tracking branch for shahabyazdi/react-multi-date-picker
 ```
 
-Do not use GitHub's **Sync fork** blindly against `main`. Update `upstream-sync` first, review upstream changes, then integrate deliberately into `main`.
+Do not use GitHub's **Sync fork** blindly against `master`. Update `upstream-sync` first, review upstream changes, then integrate deliberately into `master`.
 
 See [docs/UPSTREAM.md](docs/UPSTREAM.md).
 
