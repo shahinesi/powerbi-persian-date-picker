@@ -8,7 +8,8 @@
     "start": "pbiviz start",
     "package": "pbiviz package",
     "typecheck": "tsc --noEmit",
-    "verify": "npm run typecheck && npm run package",
+    "test": "node -e \"require('fs').rmSync('.tmp/test',{recursive:true,force:true})\" && tsc test/dateUtils.test.ts src/dateUtils.ts --module commonjs --target ES2020 --moduleResolution node --esModuleInterop --skipLibCheck --outDir .tmp/test && node .tmp/test/test/dateUtils.test.js",
+    "verify": "npm run typecheck && npm test && npm run package",
     "audit:prod": "npm audit --omit=dev --audit-level=high"
   },
   "dependencies": {
