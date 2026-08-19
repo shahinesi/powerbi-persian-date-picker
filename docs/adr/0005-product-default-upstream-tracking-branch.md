@@ -14,19 +14,19 @@ The repository also needs a minimal long-lived branch model that does not mix pr
 Use exactly two intended long-lived branches:
 
 ```text
-main           product/default branch
+master         product/default branch
 upstream-sync  clean upstream tracking branch
 ```
 
-`upstream-sync` tracks the parent repository's default branch. Upstream changes are reviewed and deliberately integrated into `main`; they are not blindly synchronized into the product branch.
+`upstream-sync` tracks the parent repository's default branch. Upstream changes are reviewed and deliberately integrated into `master`; they are not blindly synchronized into the product branch.
 
 Temporary feature/docs/fix/integration branches may exist while work is active, but should be deleted after merge.
 
 ## Consequences
 
-- GitHub landing page should use `main` and show the Power BI product README.
+- GitHub landing page uses `master` and shows the Power BI product README.
 - Fork relationship and upstream attribution remain visible.
 - `upstream-sync` can be reset to the upstream branch without contaminating product history.
 - Upstream updates become explicit product changes with review and CI.
-- `main` must never be assumed to be a mirror of the parent.
+- `master` must never be assumed to be a mirror of the parent.
 - Long-lived branch clutter is avoided.
