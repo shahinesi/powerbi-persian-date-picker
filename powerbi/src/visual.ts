@@ -1,5 +1,5 @@
 import powerbi from "powerbi-visuals-api";
-import { AdvancedFilter, FilterAction, IAdvancedFilter, IFilterColumnTarget } from "powerbi-models";
+import { AdvancedFilter, IAdvancedFilter, IFilterColumnTarget } from "powerbi-models";
 import { DatePickerDialog, DatePickerDialogResult } from "./DatePickerDialog";
 import { gregorianIsoToPersian } from "./dateUtils";
 import "../style/visual.less";
@@ -10,6 +10,7 @@ import IVisual = powerbi.extensibility.visual.IVisual;
 import IVisualHost = powerbi.extensibility.visual.IVisualHost;
 import DataViewCategoryColumn = powerbi.DataViewCategoryColumn;
 import DialogAction = powerbi.DialogAction;
+import FilterAction = powerbi.FilterAction;
 import VisualDialogPositionType = powerbi.VisualDialogPositionType;
 
 const FILTER_OBJECT_NAME = "general";
@@ -169,8 +170,10 @@ export class Visual implements IVisual {
         this.selectedStartIso = null;
         this.isApplyingFilter = true;
 
+        // Power BI's documented clear-filter runtime contract accepts null,
+        // while the current TypeScript host signature does not include null.
         this.host.applyJsonFilter(
-            null,
+            null as unknown as powerbi.IFilter,
             FILTER_OBJECT_NAME,
             FILTER_PROPERTY_NAME,
             FilterAction.remove,
