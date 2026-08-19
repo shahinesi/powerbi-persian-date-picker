@@ -12,10 +12,10 @@
     "audit:prod": "npm audit --omit=dev --audit-level=high"
   },
   "dependencies": {
-    "powerbi-models": "^1.15.0",
+    "powerbi-models": "2.1.1",
     "powerbi-visuals-api": "5.11.1",
     "react": "18.2.0",
-    "react-date-object": "^2.1.8",
+    "react-date-object": "2.1.8",
     "react-dom": "18.2.0",
     "react-multi-date-picker": "4.5.2"
   },
