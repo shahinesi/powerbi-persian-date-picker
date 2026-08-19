@@ -1,0 +1,29 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/powerbi"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Asia/Tehran"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    groups:
+      powerbi-runtime:
+        dependency-type: "production"
+      powerbi-tooling:
+        dependency-type: "development"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:15"
+      timezone: "Asia/Tehran"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"

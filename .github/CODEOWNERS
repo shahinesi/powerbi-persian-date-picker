@@ -1,0 +1,15 @@
+# Default owner
+* @shahinesi
+
+# Power BI product layer
+/powerbi/ @shahinesi
+
+# Architecture and project documentation
+/docs/ @shahinesi
+/README.md @shahinesi
+/SECURITY.md @shahinesi
+
+# CI, release, and repository automation
+/.github/ @shahinesi
+/release/ @shahinesi
+/site/ @shahinesi
