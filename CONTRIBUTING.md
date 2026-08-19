@@ -13,7 +13,7 @@ For Power BI features and fixes, prefer changing `powerbi/` rather than modifyin
 
 ## Before opening a PR
 
-1. Create a focused temporary branch from `main`.
+1. Create a focused temporary branch from `master`.
 2. Keep one concern per PR.
 3. Update documentation when behavior, architecture, compatibility, or installation changes.
 4. Add or update tests for date conversion and boundary behavior.
@@ -71,7 +71,7 @@ Use clear conventional-style subjects where practical, for example:
 The only intended long-lived branches are:
 
 ```text
-main
+master
 upstream-sync
 ```
 
@@ -79,7 +79,7 @@ Feature/docs/fix branches are temporary. Delete them after merge.
 
 ## Upstream changes
 
-Do not use **Sync fork** blindly against the product branch. Follow [`docs/UPSTREAM.md`](docs/UPSTREAM.md), where `upstream-sync` is the clean tracking branch and `main` is the product/default branch.
+Do not use **Sync fork** blindly against the product branch. Follow [`docs/UPSTREAM.md`](docs/UPSTREAM.md), where `upstream-sync` is the clean tracking branch and `master` is the product/default branch.
 
 ## Conduct
 
