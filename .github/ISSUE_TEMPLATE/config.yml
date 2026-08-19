@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/shahinesi/powerbi-persian-date-picker/security
+    about: Please use a private security channel rather than a public issue.
+  - name: Documentation
+    url: https://shahinesi.github.io/powerbi-persian-date-picker/
+    about: Read installation, compatibility, architecture, and troubleshooting guidance.

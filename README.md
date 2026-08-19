@@ -1,728 +1,185 @@
-# DatePicker
-
-Simple React datepicker component for working with `gregorian`, `persian`, `arabic` and `indian` calendars
-with the ability to select the date in `single`, `multiple`, `range` and `multiple range` modes.
-
 <div align="center">
-  <img src="https://github.com/shahabyazdi/react-multi-date-picker/blob/master/screenshot/screenshot.jpg?raw=true" alt="date picker"/>
+
+# Persian Date Picker for Power BI
+
+**A production-ready Jalali (Persian) date slicer for Power BI that filters real Gregorian `Date` / `DateTime` columns.**
+
+[فارسی](#راهنمای-سریع-فارسی) · [Installation](#installation) · [Documentation](#documentation) · [Architecture](docs/ARCHITECTURE.md) · [Download PBIVIZ](https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/master/release/PersianDatePicker.pbiviz) · [Website](https://shahinesi.github.io/powerbi-persian-date-picker/)
+
+[![Power BI Visual](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/powerbi-visual.yml/badge.svg)](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/powerbi-visual.yml)
+[![CodeQL](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/codeql-analysis.yml)
+[![Pages](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/pages.yml/badge.svg)](https://github.com/shahinesi/powerbi-persian-date-picker/actions/workflows/pages.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 </div>
 
-# Layouts
+## Why this project exists
 
-You can change the appearance of the datepicker to `prime` or `mobile` by importing css files from the styles folder.
+Power BI stores and filters dates using Gregorian date values, while many Persian-speaking users expect to choose dates in the Jalali calendar. This visual bridges those two worlds without requiring the report model to store a second Persian date column.
 
-<div align="center">
-  <img src="https://github.com/shahabyazdi/react-multi-date-picker/blob/master/screenshot/layouts.jpg?raw=true"  alt="date picker layouts"/>
-</div>
+The user sees and selects a Persian date such as `1405/05/28`; the visual converts it to the corresponding Gregorian day and applies a native Power BI filter against the bound `Date` or `DateTime` field.
 
-# Plugins
+```text
+User selects Jalali date
+        ↓
+1405/05/28
+        ↓
+Gregorian conversion
+        ↓
+2026-08-19T00:00:00.000Z
+        ↓
+Power BI AdvancedFilter
+        ↓
+>= start of day AND < start of next day
+```
 
-Ability to further customize the calendar and datepicker by adding one or more plugins.
+That half-open interval avoids the common `DateTime` bug where only midnight values match.
 
-<div align="center">
-  <img src="https://github.com/shahabyazdi/react-multi-date-picker/blob/master/screenshot/plugins.jpg?raw=true" alt="date picker plugins all in one"/>
-</div>
+## Features
+
+- Persian/Jalali calendar UI with RTL layout.
+- Works with real Power BI `Date` and `DateTime` fields.
+- Native Power BI `AdvancedFilter`; no fake text filtering.
+- Timezone-safe whole-day filtering using `[start, next-day)` UTC boundaries.
+- Restores the selected value from Power BI filter/bookmark state.
+- Clear-filter control.
+- Runtime validation that rejects non-date fields.
+- Uses the Power BI Modal Dialog API so the calendar is not clipped by the visual viewport.
+- No web-access, AAD, storage, export, or other Power BI privileges.
+- CI verifies TypeScript, date conversion, production dependency audit, PBIVIZ packaging, and CodeQL.
+- A ready-to-import `.pbiviz` is published to `release/PersianDatePicker.pbiviz`.
 
 ## Installation
 
-```code
-npm i react-multi-date-picker
+### Option A — Download the ready-to-use visual
+
+Download:
+
+**[PersianDatePicker.pbiviz](https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/master/release/PersianDatePicker.pbiviz)**
+
+Then in Power BI Desktop:
+
+1. Open your report.
+2. In **Visualizations**, select **...** → **Import a visual from a file**.
+3. Choose `PersianDatePicker.pbiviz`.
+4. Add **Persian Date Picker** to the report canvas.
+5. Drag exactly one model column whose data type is **Date** or **Date/Time** into the visual's **Date** field well.
+6. Click the visual and choose a Jalali date.
+
+For deployment, tenant settings, Desktop/Service notes, and troubleshooting, see [Installation](docs/INSTALLATION.md).
+
+### Option B — Build from source
+
+```bash
+git clone https://github.com/shahinesi/powerbi-persian-date-picker.git
+cd powerbi-persian-date-picker/powerbi
+npm install
+npm run typecheck
+npm test
+npm run audit:prod
+npm run package
 ```
 
-## Demo
+The packaged visual is written under `powerbi/dist/`.
 
-- **[DatePicker & Calendar](https://shahabyazdi.github.io/react-multi-date-picker/)**
-  - [Multiple Date Picker](https://shahabyazdi.github.io/react-multi-date-picker/multiple/)
-  - [Range Picker](https://shahabyazdi.github.io/react-multi-date-picker/range/)
-  - [Time Picker & Other Pickers](https://shahabyazdi.github.io/react-multi-date-picker/other-pickers/)
-  - [FullYear Picker](https://shahabyazdi.github.io/react-multi-date-picker/other-examples/#full-year-view)
-  - [Locales](https://shahabyazdi.github.io/react-multi-date-picker/locales/)
-- **[Plugins](https://shahabyazdi.github.io/react-multi-date-picker/plugins)**
+## Usage contract
 
-  - [Date Panel](https://shahabyazdi.github.io/react-multi-date-picker/plugins/panel/)
-  - [Multiple Time Picker](https://shahabyazdi.github.io/react-multi-date-picker/plugins/time-picker/)
-  - [Analog Time Picker](https://shahabyazdi.github.io/react-multi-date-picker/plugins/analog-time-picker/)
-  - [Toolbar](https://shahabyazdi.github.io/react-multi-date-picker/plugins/toolbar/)
-  - [Range Picker Footer](https://shahabyazdi.github.io/react-multi-date-picker/plugins/range-picker-footer/)
+The bound field must be a Power BI model column typed as **Date** or **DateTime**. Text columns containing strings such as `1405/05/28` are intentionally not accepted.
 
-- **[آموزش نصب و راه اندازی دیت پیکر به فارسی](https://shahabyazdi.github.io/react-multi-date-picker/fa)**
+For a selected day, the visual applies:
 
-## Usage
-
-```javascript
-import React, { useState } from "react";
-import DatePicker from "react-multi-date-picker";
-
-export default function Example() {
-  const [value, setValue] = useState(new Date());
-
-  return <DatePicker value={value} onChange={setValue} />;
-}
+```text
+column >= 2026-08-19T00:00:00.000Z
+AND
+column <  2026-08-20T00:00:00.000Z
 ```
 
-## Browser (non react-app)
+This safely includes every timestamp in the selected Gregorian day.
 
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>React Multi Date Picker</title>
-  </head>
-  <body>
-    <span>Calendar Example :</span>
-    <div id="calendar"></div>
+## Architecture at a glance
 
-    <span>DatePicker Example :</span>
-    <div id="datePicker"></div>
+The upstream React date-picker source is intentionally left intact. Power BI-specific integration lives under `powerbi/`.
 
-    <span>Plugins Example :</span>
-    <div id="datePickerWithPlugin"></div>
-
-    <!-- Ract -->
-    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
-
-    <!-- DatePicker and dependencies-->
-    <script src="https://cdn.jsdelivr.net/npm/date-object@latest/dist/umd/date-object.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/react-element-popper@latest/build/browser.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/react-multi-date-picker@latest/build/browser.min.js"></script>
-
-    <!-- Optional Plugin -->
-    <script src="https://cdn.jsdelivr.net/npm/react-multi-date-picker@latest/build/date_picker_header.browser.js"></script>
-
-    <script>
-      const { DatePicker, Calendar } = ReactMultiDatePicker;
-
-      ReactDOM.render(
-        React.createElement(Calendar),
-        document.getElementById("calendar")
-      );
-
-      ReactDOM.render(
-        React.createElement(DatePicker),
-        document.getElementById("datePicker")
-      );
-
-      ReactDOM.render(
-        React.createElement(DatePicker, {
-          plugins: [React.createElement(DatePickerHeader)],
-        }),
-        document.getElementById("datePickerWithPlugin")
-      );
-    </script>
-  </body>
-</html>
+```text
+react-multi-date-picker source (upstream-compatible)
+                    │
+                    ▼
+            powerbi/DatePickerDialog
+                    │
+                    ▼
+ Jalali DateObject → Gregorian UTC boundaries
+                    │
+                    ▼
+        Power BI IVisualHost.applyJsonFilter
 ```
 
-## Available props
+See [Architecture](docs/ARCHITECTURE.md), [Design](docs/DESIGN.md), and the [Architecture Decision Records](docs/adr/README.md).
 
-<table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th style="text-align:center">Type</th>
-          <th style="text-align:center">Default</th>
-          <th>Availability (DatePicker/ Calendar)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>value</td>
-          <td style="text-align:center">
-            Date,
-            <a href="https://github.com/shahabyazdi/react-date-object">
-              DateObject
-            </a>
-            , String, Number or Array
-          </td>
-          <td style="text-align:center">new Date()</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>ref</td>
-          <td style="text-align:center">React.RefObject</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>multiple</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false (true if value is Array)</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>range</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>onlyMonthPicker</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>onlyYearPicker</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>format</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center">YYYY/MM/DD</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>formattingIgnoreList</td>
-          <td style="text-align:center">Array</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>calendar</td>
-          <td style="text-align:center">Object</td>
-          <td style="text-align:center">gregorian</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>locale</td>
-          <td style="text-align:center">Object</td>
-          <td style="text-align:center">gregorian_en</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>mapDays</td>
-          <td style="text-align:center">Function</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>onChange</td>
-          <td style="text-align:center">Function</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>onPropsChange</td>
-          <td style="text-align:center">Function</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>onMonthChange</td>
-          <td style="text-align:center">Function</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>onYearChange</td>
-          <td style="text-align:center">Function</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>onFocusedDateChange</td>
-          <td style="text-align:center">Function</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>digits</td>
-          <td style="text-align:center">Array</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>weekDays</td>
-          <td style="text-align:center">Array</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>months</td>
-          <td style="text-align:center">Array</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>showOtherDays</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>minDate</td>
-          <td style="text-align:center">Date, DateObject, String or Number</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>maxDate</td>
-          <td style="text-align:center">Date, DateObject, String or Number</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>disableYearPicker</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>disableMonthPicker</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>disableDayPicker</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>zIndex</td>
-          <td style="text-align:center">Number</td>
-          <td style="text-align:center">100</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>plugins</td>
-          <td style="text-align:center">Array</td>
-          <td style="text-align:center">[]</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>sort</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>numberOfMonths</td>
-          <td style="text-align:center">Number</td>
-          <td style="text-align:center">1</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>currentDate</td>
-          <td style="text-align:center">DateObject</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>buttons</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">true</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>renderButton</td>
-          <td style="text-align:center">React.ReactElement or Function</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>weekStartDayIndex</td>
-          <td style="text-align:center">Number</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>className</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>readOnly</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>disabled</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>hideMonth</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>hideYear</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-         <tr>
-          <td>hideWeekDays</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>shadow</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">true</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>fullYear</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>displayWeekNumbers</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>weekNumber</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center"></td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>weekPicker</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>rangeHover</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>monthYearSeparator</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center">"," for LTR locales, "،" for RTL locales</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>formatMonth</td>
-          <td style="text-align:center">Function</td>
-          <td style="text-align:center">undefined</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>formatYear</td>
-          <td style="text-align:center">Function</td>
-          <td style="text-align:center">undefined</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>highlightToday</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">true</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>style</td>
-          <td style="text-align:center">React.CSSProperties</td>
-          <td style="text-align:center">{}</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>headerOrder</td>
-          <td style="text-align:center">Array</td>
-          <td style="text-align:center">["LEFT_BUTTON", "MONTH_YEAR", "RIGHT_BUTTON"]</td>
-          <td>both</td>
-        </tr>
-        <tr>
-          <td>onOpen</td>
-          <td style="text-align:center">Function</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>onClose</td>
-          <td style="text-align:center">Function</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>onPositionChange</td>
-          <td style="text-align:center">Function</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>containerClassName</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>arrowClassName</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center">0</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>containerStyle</td>
-          <td style="text-align:center">React.CSSProperties</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>arrowStyle</td>
-          <td style="text-align:center">React.CSSProperties</td>
-          <td style="text-align:center">0</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>arrow</td>
-          <td style="text-align:center">Boolean or React.ReactElement</td>
-          <td style="text-align:center">true</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>animations</td>
-          <td style="text-align:center">Array</td>
-          <td style="text-align:center">false</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>inputClass</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>name</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>id</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>title</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>required</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>placeholder</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>render</td>
-          <td style="text-align:center">React.ReactElement or Function</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>inputMode</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>scrollSensitive</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">true</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>hideOnScroll</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>calendarPosition</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center">&quot;bottom-left&quot;</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>editable</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">true</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>onlyShowInRangeDates</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">true</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>fixMainPosition</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>fixRelativePosition</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>offsetY</td>
-          <td style="text-align:center">Number</td>
-          <td style="text-align:center">0</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>offsetX</td>
-          <td style="text-align:center">Number</td>
-          <td style="text-align:center">0</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>mobileLabels</td>
-          <td style="text-align:center">Object</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>portal</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>portalTarget</td>
-          <td style="text-align:center">HTMLElement</td>
-          <td style="text-align:center"></td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>onOpenPickNewDate</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">true</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>mobileButtons</td>
-          <td style="text-align:center">HTMLButtonElement[]</td>
-          <td style="text-align:center">[]</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>dateSeparator</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center">'~' in range mode, ',' in multiple mode</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>multipleRangeSeparator</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center">','</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>typingTimeout</td>
-          <td style="text-align:center">String</td>
-          <td style="text-align:center">700</td>
-          <td>DatePicker</td>
-        </tr>
-        <tr>
-          <td>autoFocus</td>
-          <td style="text-align:center">Boolean</td>
-          <td style="text-align:center">false</td>
-          <td>Calendar</td>
-        </tr>
-      </tbody>
-    </table>
+## Quality and security gates
 
-# Calendars & Locales
+Every product change is expected to pass:
 
-Click [here](https://shahabyazdi.github.io/react-multi-date-picker/calendars) to see the descriptions.
+| Gate | Purpose |
+|---|---|
+| TypeScript `tsc --noEmit` | Compile-time API/type validation |
+| Date conversion tests | Locks Jalali ↔ Gregorian and UTC boundary behavior |
+| `npm audit --omit=dev --audit-level=high` | Blocks high/critical production dependency vulnerabilities |
+| `pbiviz package` | Validates Power BI capabilities, linting, bundle and packaging |
+| CodeQL v4 | Static security analysis for JavaScript/TypeScript |
 
-<table>
-  <tbody>
-    <tr>
-      <th colspan="2" rowspan="2">Calendars</th>
-      <th>Gregorian</th>
-      <th>Persian (Solar Hijri)</th>
-      <th>Jalali</th>
-      <th>Arabic (Lunar Hijri)</th>
-      <th>Indian</th>
-    </tr>
-    <tr>
-      <td>/calendars/gregorian</td>
-      <td>/calendars/persian</td>
-      <td>/calendars/jalali</td>
-      <td>/calendars/arabic</td>
-      <td>/calendars/indian</td>
-    </tr>
-    <tr>
-      <th rowspan="5">Locales</th>
-      <th>English</th>
-      <td>/locales/gregorian_en</td>
-      <td>/locales/persian_en</td>
-      <td>/locales/persian_en</td>
-      <td>/locales/arabic_en</td>
-      <td>/locales/indian_en</td>
-    </tr>
-    <tr>
-      <th>Portuguese - BRAZIL</th>
-      <td>/locales/gregorian_pt_br</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <th>Farsi</th>
-      <td>/locales/gregorian_fa</td>
-      <td>/locales/persian_fa</td>
-      <td>/locales/persian_fa</td>
-      <td>/locales/arabic_fa</td>
-      <td>/locales/indian_fa</td>
-    </tr>
-    <tr>
-      <th>Arabic</th>
-      <td>/locales/gregorian_ar</td>
-      <td>/locales/persian_ar</td>
-      <td>/locales/persian_ar</td>
-      <td>/locales/arabic_ar</td>
-      <td>/locales/indian_ar</td>
-    </tr>
-    <tr>
-      <th>Hindi</th>
-      <td>/locales/gregorian_hi</td>
-      <td>/locales/persian_hi</td>
-      <td>/locales/persian_hi</td>
-      <td>/locales/arabic_hi</td>
-      <td>/locales/indian_hi</td>
-    </tr>
-  </tbody>
-</table>
+More details: [Testing](docs/TESTING.md) and [Quality Gates](docs/QUALITY-GATES.md).
 
-<br/>
+## Documentation
 
-Of course, you can customize the names of the months and days of the week
-in both the calendar & input by using the `months` and `weekDays` Props.
+| Document | Purpose |
+|---|---|
+| [Documentation Index](docs/README.md) | Complete map of project docs |
+| [Installation](docs/INSTALLATION.md) | Install, import and deployment |
+| [Usage](docs/USAGE.md) | User behavior and data requirements |
+| [Architecture](docs/ARCHITECTURE.md) | Components and runtime flow |
+| [Design](docs/DESIGN.md) | Product and technical design |
+| [ADRs](docs/adr/README.md) | Architecture decisions and rationale |
+| [Development](docs/DEVELOPMENT.md) | Local development workflow |
+| [Testing](docs/TESTING.md) | Test strategy and CI |
+| [Security](SECURITY.md) | Vulnerability reporting policy |
+| [Threat Model](docs/THREAT-MODEL.md) | Security boundaries and abuse cases |
+| [Accessibility](docs/ACCESSIBILITY.md) | Keyboard/RTL/accessibility requirements |
+| [Compatibility](docs/COMPATIBILITY.md) | Supported Power BI environments |
+| [Releasing](docs/RELEASING.md) | Packaging and release process |
+| [Upstream Strategy](docs/UPSTREAM.md) | Keeping the fork healthy |
+| [Governance](docs/GOVERNANCE.md) | Maintenance and decision process |
+| [Roadmap](docs/ROADMAP.md) | Planned product direction |
+| [Troubleshooting](docs/TROUBLESHOOTING.md) | Common problems |
+| [License & Attribution](docs/LICENSES.md) | MIT and upstream attribution |
 
-Also, you can create a custom Calendar and Locale:
+## Upstream relationship
 
-- [Creating a custom Calendar](https://shahabyazdi.github.io/react-multi-date-picker/calendars/#custom-calendar)
-- [Creating a custom Locale](https://shahabyazdi.github.io/react-multi-date-picker/locales/#custom-locale)
+This repository is a fork of [`shahabyazdi/react-multi-date-picker`](https://github.com/shahabyazdi/react-multi-date-picker). The upstream project remains the source of the reusable React calendar implementation.
+
+This fork adds a distinct Power BI product layer, documentation, CI/release automation, and site. To avoid damaging upstream synchronization:
+
+- `master` is the product/default branch for this repository.
+- `upstream-sync` is reserved as a clean tracking branch for the upstream `master` history.
+- Upstream changes are first reviewed on `upstream-sync`, then deliberately integrated into `master` through a product PR.
+
+See [Upstream Strategy](docs/UPSTREAM.md).
+
+## راهنمای سریع فارسی
+
+این Visual برای این ساخته شده که کاربر داخل Power BI **تاریخ شمسی انتخاب کند** ولی فیلتر واقعی روی ستون میلادی `Date/DateTime` مدل اعمال شود.
+
+**نصب:** فایل [`PersianDatePicker.pbiviz`](https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/master/release/PersianDatePicker.pbiviz) را دانلود کن → داخل Power BI از **Import a visual from a file** واردش کن → یک ستون واقعی Date/DateTime به Visual بده → تاریخ شمسی را انتخاب کن.
+
+مثلاً انتخاب `۱۴۰۵/۰۵/۲۸` در UI، پشت صحنه روز Gregorian متناظر را روی مدل فیلتر می‌کند. لازم نیست در مدل یک ستون تاریخ شمسی جدا بسازی.
+
+## Contributing
+
+Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md), read the [design constraints](docs/DESIGN.md), and keep Power BI-specific changes inside `powerbi/` whenever possible.
+
+## Security
+
+Please do **not** open a public issue for a suspected vulnerability. Follow [SECURITY.md](SECURITY.md).
+
+## License and attribution
+
+The repository is distributed under the existing [MIT License](LICENSE). The original `react-multi-date-picker` code is authored by Shahab Yazdi and contributors; this fork preserves that license and attribution. Power BI integration and project-specific additions are maintained in this fork. See [NOTICE.md](NOTICE.md) and [License & Attribution](docs/LICENSES.md).
