@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="راهنمای کامل Persian Date Picker for Power BI — نصب، داده، مدل، تبدیل شمسی به میلادی، DateTime، Bookmark، Service، DirectQuery، RLS و Troubleshooting.">
+  <meta name="theme-color" content="#0b1020">
+  <title>راهنمای کامل | Persian Date Picker for Power BI</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body class="docs-body">
+  <header class="topbar">
+    <nav class="shell nav">
+      <a class="brand" href="index.html"><span class="brand-mark">۲۸</span><span>Persian Date Picker</span></a>
+      <div class="nav-links"><a href="index.html">خانه</a><a href="https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/main/release/PersianDatePicker.pbiviz">دانلود</a><a href="https://github.com/shahinesi/powerbi-persian-date-picker">GitHub</a></div>
+      <button class="menu-button" type="button" aria-label="باز کردن فهرست" data-menu>☰</button>
+    </nav>
+  </header>
+
+  <div class="docs-shell">
+    <aside class="sidebar" data-sidebar>
+      <div class="sidebar-inner">
+        <label class="search-label" for="doc-search">جست‌وجو در راهنما</label>
+        <input id="doc-search" class="doc-search" data-search type="search" placeholder="مثلاً DateTime، RLS، Text...">
+        <nav class="toc" data-toc>
+          <a href="#overview">این Visual چیست؟</a>
+          <a href="#getting-started">شروع از صفر</a>
+          <a href="#requirements">پیش‌نیازها</a>
+          <a href="#install">نصب PBIVIZ</a>
+          <a href="#data-model">انتخاب ستون و مدل داده</a>
+          <a href="#bind-field">اختصاص Field</a>
+          <a href="#first-test">اولین تست</a>
+          <a href="#conversion">شمسی چطور تبدیل می‌شود؟</a>
+          <a href="#datetime">DateTime و ساعت</a>
+          <a href="#data-preparation">آماده‌سازی Text/Jalali data</a>
+          <a href="#dimdate">DimDate و Star Schema</a>
+          <a href="#multiple-dates">چند ستون تاریخ</a>
+          <a href="#interactions">تعامل با Visualهای دیگر</a>
+          <a href="#clear">Clear filter</a>
+          <a href="#bookmarks">Bookmark</a>
+          <a href="#service">Power BI Service</a>
+          <a href="#directquery">DirectQuery</a>
+          <a href="#rls">RLS</a>
+          <a href="#modal">Modal Dialog</a>
+          <a href="#privacy">امنیت و حریم خصوصی</a>
+          <a href="#deployment">تحویل به کاربران</a>
+          <a href="#troubleshooting">رفع خطا</a>
+          <a href="#faq">FAQ</a>
+          <a href="#technical">برای توسعه‌دهندگان</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="docs-main">
+      <div class="doc-hero">
+        <span class="eyebrow">راهنمای کامل فارسی · از صفر تا صد</span>
+        <h1>از دانلود فایل تا فیلتر درست داده در Power BI</h1>
+        <p>این راهنما برای کاربری نوشته شده که ممکن است حتی نداند Custom Visual چیست. هر مرحله را انجام بده، خروجی را تست کن و اگر جایی مشکل بود از بخش Troubleshooting جلو برو.</p>
+        <div class="actions"><a class="button primary" href="https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/main/release/PersianDatePicker.pbiviz">دانلود PersianDatePicker.pbiviz</a><a class="button secondary" href="#getting-started">شروع آموزش</a></div>
+      </div>
+
+      <article class="doc-content" data-doc-content>
+        <section id="overview" data-section data-search-text="visual چیست jalali شمسی gregorian میلادی filter power bi">
+          <h2>این Visual دقیقاً چیست؟</h2>
+          <p>یک Date Picker شمسی برای Power BI است. کاربر در UI تاریخ Jalali انتخاب می‌کند، اما مدل Power BI همچنان روی <code>Date</code> یا <code>DateTime</code> واقعی Gregorian باقی می‌ماند.</p>
+          <div class="diagram"><code>۱۴۰۵/۰۵/۲۸</code><b>← انتخاب کاربر</b><i>↓</i><code>2026-08-19</code><b>← تبدیل انتخاب</b><i>↓</i><code>Power BI AdvancedFilter</code><b>← فیلتر مدل</b></div>
+          <div class="callout info"><strong>اصل مهم</strong><span>Visual همه‌ی ردیف‌های دیتاست را تبدیل نمی‌کند. فقط تاریخ انتخاب‌شده توسط کاربر تبدیل می‌شود.</span></div>
+        </section>
+
+        <section id="getting-started" data-section data-search-text="شروع quick start beginner صفر نصب">
+          <h2>شروع سریع برای فرد کاملاً مبتدی</h2>
+          <ol class="task-list">
+            <li><strong>فایل PBIVIZ را دانلود کن.</strong> این همان فایل قابل نصب Visual است.</li>
+            <li><strong>Power BI Desktop را باز کن.</strong></li>
+            <li><strong>Visual را Import کن.</strong> Visualizations → ... → Import a visual from a file.</li>
+            <li><strong>Visual را روی Canvas قرار بده.</strong></li>
+            <li><strong>یک ستون Date/DateTime واقعی به آن بده.</strong></li>
+            <li><strong>روی Date Picker کلیک کن و یک تاریخ شمسی انتخاب کن.</strong></li>
+            <li><strong>با یک Table کنار آن تست کن</strong> که رکوردهای همان روز فیلتر شده باشند.</li>
+          </ol>
+          <div class="callout success"><strong>اگر فقط همین سناریو را داری</strong><span>و ستونت واقعاً Date/DateTime است، همین ۷ مرحله برای استفاده کافی است.</span></div>
+        </section>
+
+        <section id="requirements" data-section data-search-text="نیاز prerequisite power bi desktop date datetime">
+          <h2>پیش‌نیازها</h2>
+          <ul>
+            <li>Power BI Desktop یا محیطی که Custom Visual را پشتیبانی کند.</li>
+            <li>فایل <code>PersianDatePicker.pbiviz</code>.</li>
+            <li>یک ستون مدل با Data Type برابر <code>Date</code> یا <code>Date/Time</code>.</li>
+          </ul>
+          <h3>چطور نوع ستون را چک کنم؟</h3>
+          <p>در Data view یا Model view ستون را انتخاب کن و در Column tools، Data type را ببین. اگر Text است، به بخش <a href="#data-preparation">آماده‌سازی داده</a> برو.</p>
+        </section>
+
+        <section id="install" data-section data-search-text="download pbiviz import visualizations نصب دانلود">
+          <h2>نصب PBIVIZ قدم‌به‌قدم</h2>
+          <h3>۱. دانلود فایل</h3>
+          <p><a href="https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/main/release/PersianDatePicker.pbiviz">PersianDatePicker.pbiviz</a> را دانلود کن.</p>
+          <h3>۲. Import داخل Power BI</h3>
+          <ol><li>Report را باز کن.</li><li>در Visualizations روی <code>...</code> بزن.</li><li><strong>Import a visual from a file</strong> را انتخاب کن.</li><li>فایل PBIVIZ را انتخاب کن.</li><li>بعد از Import، Visual جدید در پنل ظاهر می‌شود.</li></ol>
+          <h3>۳. قرار دادن روی صفحه</h3>
+          <p>روی آیکن Visual کلیک کن یا آن را به Canvas اضافه کن. در این مرحله هنوز Date Picker داده‌ای ندارد و باید Field تاریخ را اختصاص بدهی.</p>
+        </section>
+
+        <section id="data-model" data-section data-search-text="data model dimdate sales orders date column مدل داده ستون تاریخ">
+          <h2>چه ستونی را باید به Date Picker بدهم؟</h2>
+          <p>ستونی را بده که واقعاً باید Filter Context گزارش را هدایت کند.</p>
+          <div class="example-grid">
+            <div><h3>مدل ساده</h3><pre><code>Sales[SaleDate] : Date</code></pre><p>همین ستون را مستقیم بده.</p></div>
+            <div><h3>مدل ستاره‌ای</h3><pre><code>DimDate[Date] : Date</code></pre><p>معمولاً انتخاب بهتر برای چند Fact.</p></div>
+          </div>
+          <div class="callout warn"><strong>اشتباه رایج</strong><span>ستون <code>1405/05/28</code> که Data Type آن Text است، Date محسوب نمی‌شود.</span></div>
+        </section>
+
+        <section id="bind-field" data-section data-search-text="bind field drag assign اختصاص فیلد date">
+          <h2>اختصاص دادن Field به Visual</h2>
+          <ol><li>Visual را روی Canvas انتخاب کن.</li><li>از پنل Data، جدول موردنظر را باز کن.</li><li>ستون تاریخ را پیدا کن.</li><li>آن را Drag کن و داخل Field با عنوان Date قرار بده.</li></ol>
+          <pre><code>Orders[OrderDate]  →  Persian Date Picker / Date</code></pre>
+          <p>Visual در runtime نوع Field را بررسی می‌کند. اگر Date/DateTime نباشد، به‌جای تقویم پیام خطا می‌بینی.</p>
+        </section>
+
+        <section id="first-test" data-section data-search-text="test table verify اولین تست">
+          <h2>اولین تست صحیح</h2>
+          <p>یک Table Visual کنار Date Picker بساز و این فیلدها را داخلش بگذار:</p>
+          <pre><code>OrderId
+OrderDate</code></pre>
+          <p>حالا یک روز شمسی را انتخاب کن. تعداد/ردیف‌های Table باید فقط با همان روز متناظر سازگار شوند.</p>
+          <div class="callout success"><strong>تست مرجع</strong><span>انتخاب <code>۱۴۰۵/۰۵/۲۸</code> باید روز Gregorian متناظر <code>2026-08-19</code> را هدف بگیرد.</span></div>
+        </section>
+
+        <section id="conversion" data-section data-search-text="conversion jalali gregorian تبدیل شمسی میلادی dateobject filter">
+          <h2>تبدیل شمسی به میلادی چطور انجام می‌شود؟</h2>
+          <p>تقویم با Jalali DateObject کار می‌کند. بعد از تایید کاربر، انتخاب به روز Gregorian متناظر تبدیل و برای ساخت Filter استفاده می‌شود.</p>
+          <div class="flow docs-flow" dir="ltr"><div>Jalali selection<small>1405/05/28</small></div><i>→</i><div>Gregorian day<small>2026-08-19</small></div><i>→</i><div>Day boundaries<small>start / next day</small></div><i>→</i><div>AdvancedFilter<small>Power BI</small></div></div>
+          <p>این تبدیل در runtime Visual اتفاق می‌افتد؛ هیچ درخواست خارجی برای تبدیل تاریخ ارسال نمی‌شود.</p>
+        </section>
+
+        <section id="datetime" data-section data-search-text="datetime time timestamp ساعت بازه next day start">
+          <h2>DateTime و رکوردهای دارای ساعت</h2>
+          <p>فرض کن داده‌ها این‌طورند:</p>
+          <pre><code>2026-08-19 00:01:00
+2026-08-19 13:42:10
+2026-08-19 23:59:59
+2026-08-20 00:00:00</code></pre>
+          <p>فیلتر روز 19 آگوست این است:</p>
+          <pre><code>DateColumn &gt;= 2026-08-19T00:00:00.000Z
+AND
+DateColumn &lt;  2026-08-20T00:00:00.000Z</code></pre>
+          <p>سه رکورد اول داخل روز هستند و رکورد چهارم نیست. این طراحی از Equality روی midnight امن‌تر است.</p>
+        </section>
+
+        <section id="data-preparation" data-section data-search-text="text jalali source power query etl آماده سازی داده شمسی متن">
+          <h2>اگر دیتای من Text یا فقط شمسی است چه کنم؟</h2>
+          <h3>حالت ۱ — Gregorian Text</h3>
+          <pre><code>"2026-08-19"  (Text)</code></pre>
+          <p>در Power Query از Transform data، Data Type ستون را به Date/DateTime تبدیل کن و conversion errors را بررسی کن.</p>
+          <h3>حالت ۲ — فقط Jalali Text</h3>
+          <pre><code>"1405/05/28"  (Text)</code></pre>
+          <p>این ستون را مستقیم به Picker نده. ابتدا یک ستون Gregorian واقعی در Source/ETL/Data Warehouse/Power Query بساز.</p>
+          <pre><code>Jalali Text → validated conversion → Gregorian Date → Power BI Model</code></pre>
+          <p>ترتیب پیشنهادی:</p>
+          <ol><li>Gregorian Date از Source System.</li><li>تبدیل در ETL/Data Warehouse.</li><li>تبدیل در Power Query با تابع تاییدشده سازمان.</li></ol>
+          <div class="callout info"><strong>چرا خود Visual Text را parse نمی‌کند؟</strong><span>Data Preparation و UI Filtering دو مسئولیت جدا هستند. این تفکیک جلوی ambiguity، locale bug و relationship ضعیف را می‌گیرد.</span></div>
+        </section>
+
+        <section id="dimdate" data-section data-search-text="dimdate star schema relationship calendar table مدل ستاره ای">
+          <h2>بهترین حالت: اتصال به DimDate</h2>
+          <pre><code>                 DimDate[Date]
+                    │
+          ┌─────────┼──────────┐
+          ▼         ▼          ▼
+        Sales     Orders    Payments</code></pre>
+          <p>اگر Relationshipهای مدل درست باشند، یک Date Picker روی <code>DimDate[Date]</code> می‌تواند Filter Context را به چند Fact منتقل کند.</p>
+          <p>ستون‌های شمسی اضافی برای Label یا گزارش می‌توانند وجود داشته باشند، اما برای عملکرد Picker اجباری نیستند.</p>
+        </section>
+
+        <section id="multiple-dates" data-section data-search-text="created paid delivered multiple date چند تاریخ">
+          <h2>اگر یک جدول چند تاریخ دارد</h2>
+          <pre><code>Orders[CreatedAt]
+Orders[PaidAt]
+Orders[DeliveredAt]</code></pre>
+          <p>باید تصمیم بگیری Date Picker کدام مفهوم بیزنسی را فیلتر کند. Visual نمی‌تواند این تصمیم را از نام جدول حدس بزند. در مدل‌های پیچیده ممکن است Role-playing Date Dimension لازم باشد.</p>
+        </section>
+
+        <section id="interactions" data-section data-search-text="edit interactions chart filter visual تعامل چارت">
+          <h2>تعامل با Chart/Table/KPIهای دیگر</h2>
+          <p>اگر Date Picker تغییر کرد ولی یک Chart تغییر نکرد:</p>
+          <ol><li>Relationship مسیر فیلتر را بررسی کن.</li><li>از Format → Edit interactions مطمئن شو Interaction غیرفعال نشده.</li><li>Page/Report filter متناقض را بررسی کن.</li><li>مطمئن شو Visual مقصد از همان مدل/مسیر تاریخی استفاده می‌کند.</li></ol>
+        </section>
+
+        <section id="clear" data-section data-search-text="clear remove filter پاک کردن">
+          <h2>پاک‌کردن تاریخ</h2>
+          <p>بعد از انتخاب، کنترل Clear ظاهر می‌شود. Clear فیلتر متعلق به Date Picker را حذف می‌کند و مقدار UI را خالی می‌کند. فیلترهای دیگر گزارش دست‌نخورده می‌مانند.</p>
+        </section>
+
+        <section id="bookmarks" data-section data-search-text="bookmark restore state filter بوکمارک">
+          <h2>Bookmark و Restore</h2>
+          <p>Visual هنگام update، فیلتر Power BI را می‌خواند و مقدار نمایش‌داده‌شده را با Filter State هماهنگ می‌کند.</p>
+          <h3>تست Bookmark</h3>
+          <ol><li>یک تاریخ انتخاب کن.</li><li>Bookmark با Data state بساز.</li><li>تاریخ دیگری انتخاب کن.</li><li>Bookmark اول را Restore کن.</li><li>هم گزارش و هم تاریخ روی Picker باید برگردند.</li></ol>
+        </section>
+
+        <section id="service" data-section data-search-text="power bi service publish tenant custom visual سرویس انتشار">
+          <h2>Power BI Service</h2>
+          <p>بعد از Publish، رفتار Custom Visual ممکن است تحت Tenant policy سازمان باشد. اگر در Desktop کار می‌کند ولی در Service نه، Tenant settings، Custom Visual policy و capability محیط را بررسی کن.</p>
+        </section>
+
+        <section id="directquery" data-section data-search-text="directquery import performance query source">
+          <h2>DirectQuery و Import</h2>
+          <p>Date Picker خودش API دیتاسورس را صدا نمی‌زند. فقط Filter را به Power BI می‌دهد.</p>
+          <p>در DirectQuery، انتخاب ممکن است باعث query جدید به Source شود. Performance به مدل، Query Folding، index و Source بستگی دارد. در Import، Filter روی مدل Import شده اعمال می‌شود.</p>
+        </section>
+
+        <section id="rls" data-section data-search-text="rls security role row level امنیت">
+          <h2>RLS</h2>
+          <p>Picker RLS را دور نمی‌زند و Security Boundary نیست. RLS باید در مدل تعریف شود؛ Picker فقط داده‌ای را که کاربر از قبل مجاز به دیدن آن است محدودتر می‌کند.</p>
+        </section>
+
+        <section id="modal" data-section data-search-text="modal dialog calendar opens embedded publish to web dashboard">
+          <h2>چرا Calendar در Modal Dialog باز می‌شود؟</h2>
+          <p>Popupهای معمولی Custom Visual ممکن است با اندازه viewport Visual بریده شوند. این پروژه از Power BI Modal Dialog API استفاده می‌کند تا Calendar مستقل از اندازه کادر Visual باز شود.</p>
+          <p>اگر محیط اجرا Modal Dialog را پشتیبانی نکند، Visual Warning نشان می‌دهد. این مورد را مخصوصاً در Embedded/Publish-to-web/Dashboardهای خاص بررسی کن.</p>
+        </section>
+
+        <section id="privacy" data-section data-search-text="security privacy web aad storage api امنیت حریم خصوصی">
+          <h2>امنیت و حریم خصوصی</h2>
+          <ul><li>Web privilege ندارد.</li><li>AAD privilege ندارد.</li><li>Storage privilege ندارد.</li><li>تبدیل تاریخ داخل runtime انجام می‌شود.</li><li>CodeQL و production dependency audit در CI اجرا می‌شوند.</li></ul>
+          <p>برای جزئیات فنی: <a href="https://github.com/shahinesi/powerbi-persian-date-picker/blob/main/SECURITY.md">SECURITY.md</a> و <a href="https://github.com/shahinesi/powerbi-persian-date-picker/blob/main/docs/THREAT-MODEL.md">Threat Model</a>.</p>
+        </section>
+
+        <section id="deployment" data-section data-search-text="deploy user organizational visual appsource تحویل کاربران نصب سازمانی">
+          <h2>تحویل به کاربر نهایی</h2>
+          <h3>روش ساده</h3><p>فایل PBIVIZ را به کاربر بده و همین راهنمای نصب را لینک کن.</p>
+          <h3>برای سازمان</h3><p>اگر قرار است تعداد زیادی کاربر استفاده کنند، انتشار کنترل‌شده به‌عنوان Organizational Visual در Power BI tenant گزینه مناسب‌تری است.</p>
+          <h3>چک‌لیست قبل از تحویل</h3>
+          <ul class="checklist"><li>Field نوع Date/DateTime دارد.</li><li>یک روز با Table مرجع تست شده.</li><li>DateTimeهای دارای ساعت تست شده.</li><li>Clear تست شده.</li><li>Bookmark تست شده، اگر استفاده می‌شود.</li><li>Edit interactions بررسی شده.</li><li>Service و RLS تست شده، اگر کاربرد دارد.</li></ul>
+        </section>
+
+        <section id="troubleshooting" data-section data-search-text="troubleshooting error مشکل خطا disabled field calendar chart">
+          <h2>رفع خطا</h2>
+          <div class="faq-item"><h3>Date Picker غیرفعال است</h3><p>یک Field معتبر Date/DateTime اختصاص نداده‌ای.</p></div>
+          <div class="faq-item"><h3>پیام فیلد باید Date یا DateTime باشد</h3><p>ستون Text/Number است. Data Type مدل را اصلاح کن.</p></div>
+          <div class="faq-item"><h3>تاریخ انتخاب می‌شود ولی Chart تغییر نمی‌کند</h3><p>Relationship، Edit interactions و Filter Pane را بررسی کن.</p></div>
+          <div class="faq-item"><h3>Calendar باز نمی‌شود</h3><p>Modal Dialog capability/محیط اجرا را بررسی کن و Power BI Desktop را به‌روز کن.</p></div>
+          <div class="faq-item"><h3>رکوردهای دارای ساعت اشتباهند</h3><p>نسخه فعلی از بازه start تا next-day استفاده می‌کند. فایل release فعلی را نصب و با Table مرجع تست کن.</p></div>
+          <div class="faq-item"><h3>Bookmark مقدار را برنمی‌گرداند</h3><p>مطمئن شو Bookmark شامل Data state است و Filter دیگری روی همان ستون تضاد ایجاد نمی‌کند.</p></div>
+        </section>
+
+        <section id="faq" data-section data-search-text="faq سوالات خروجی میلادی ستون شمسی range internet">
+          <h2>سوالات پرتکرار</h2>
+          <div class="faq-item"><h3>خروجی میلادی یعنی چه؟</h3><p>Visual ستون جدید تولید نمی‌کند؛ انتخاب شمسی را به Gregorian day boundaries تبدیل و به Filter Power BI اختصاص می‌دهد.</p></div>
+          <div class="faq-item"><h3>ستون شمسی جدا لازم است؟</h3><p>خیر؛ اگر Date/DateTime Gregorian واقعی داری، همان کافی است.</p></div>
+          <div class="faq-item"><h3>Text شمسی را مستقیم می‌گیرد؟</h3><p>خیر. اول Data Preparation.</p></div>
+          <div class="faq-item"><h3>Range دارد؟</h3><p>Scope فعلی Single Day است؛ Range می‌تواند در نسخه آینده اضافه شود.</p></div>
+          <div class="faq-item"><h3>داده را به اینترنت می‌فرستد؟</h3><p>Visual Web/AAD/Storage privilege درخواست نمی‌کند.</p></div>
+        </section>
+
+        <section id="technical" data-section data-search-text="developer architecture adr design source build npm github توسعه معماری">
+          <h2>برای توسعه‌دهندگان و Maintainerها</h2>
+          <p>Power BI integration در پوشه <code>powerbi/</code> جدا شده تا سورس upstream مدیریت‌پذیر بماند.</p>
+          <pre><code>git clone https://github.com/shahinesi/powerbi-persian-date-picker.git
+cd powerbi-persian-date-picker/powerbi
+npm install
+npm run typecheck
+npm test
+npm run audit:prod
+npm run package</code></pre>
+          <div class="link-grid">
+            <a href="https://github.com/shahinesi/powerbi-persian-date-picker/blob/main/docs/ARCHITECTURE.md">Architecture</a>
+            <a href="https://github.com/shahinesi/powerbi-persian-date-picker/blob/main/docs/DESIGN.md">Design Doc</a>
+            <a href="https://github.com/shahinesi/powerbi-persian-date-picker/tree/main/docs/adr">ADRs</a>
+            <a href="https://github.com/shahinesi/powerbi-persian-date-picker/blob/main/docs/THREAT-MODEL.md">Threat Model</a>
+            <a href="https://github.com/shahinesi/powerbi-persian-date-picker/blob/main/docs/UPSTREAM.md">Upstream Strategy</a>
+            <a href="https://github.com/shahinesi/powerbi-persian-date-picker/blob/main/CONTRIBUTING.md">Contributing</a>
+          </div>
+        </section>
+      </article>
+    </main>
+  </div>
+
+  <footer><div class="shell footer-inner"><div><strong>Persian Date Picker for Power BI</strong><p>راهنمای استفاده + مستندات فنی کامل</p></div><div class="footer-links"><a href="index.html">خانه</a><a href="https://github.com/shahinesi/powerbi-persian-date-picker">GitHub</a><a href="https://github.com/shahinesi/powerbi-persian-date-picker/blob/main/LICENSE">License</a></div></div></footer>
+</body>
+</html>

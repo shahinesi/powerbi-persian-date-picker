@@ -3,35 +3,35 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Persian Jalali Date Picker custom visual for Power BI — select dates in Persian and filter real Gregorian Date/DateTime fields.">
+  <meta name="description" content="Persian Jalali Date Picker for Power BI — انتخاب شمسی برای کاربر و فیلتر واقعی Gregorian روی Date/DateTime مدل.">
   <meta name="theme-color" content="#0b1020">
   <title>Persian Date Picker for Power BI</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="nav-wrap">
-    <nav class="nav shell" aria-label="ناوبری اصلی">
-      <a class="brand" href="#top"><span class="brand-mark">۲۸</span><span>Persian Date Picker</span></a>
+  <header class="topbar">
+    <nav class="shell nav" aria-label="ناوبری اصلی">
+      <a class="brand" href="index.html"><span class="brand-mark">۲۸</span><span>Persian Date Picker</span></a>
       <div class="nav-links">
+        <a href="docs.html">راهنمای کامل</a>
         <a href="#install">نصب</a>
-        <a href="#architecture">معماری</a>
-        <a href="#quality">کیفیت</a>
+        <a href="#how">نحوه کار</a>
         <a href="https://github.com/shahinesi/powerbi-persian-date-picker">GitHub</a>
       </div>
     </nav>
   </header>
 
-  <main id="top">
+  <main>
     <section class="hero shell">
       <div class="hero-copy">
         <span class="eyebrow">Power BI Custom Visual · Jalali / Persian</span>
         <h1>تاریخ شمسی برای کاربر.<br><span>فیلتر واقعی میلادی برای Power BI.</span></h1>
-        <p class="lead">یک Date Picker شمسی حرفه‌ای که بدون ساخت ستون تاریخ شمسی جدا، روی ستون واقعی <code>Date / DateTime</code> مدل Power BI فیلتر Native اعمال می‌کند.</p>
+        <p class="lead">کاربر تاریخ را با تقویم شمسی انتخاب می‌کند؛ Visual همان انتخاب را به روز Gregorian متناظر تبدیل می‌کند و روی ستون واقعی <code>Date / DateTime</code> مدل Power BI فیلتر Native اعمال می‌کند.</p>
         <div class="actions">
-          <a class="button primary" href="https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/master/release/PersianDatePicker.pbiviz">دانلود PBIVIZ</a>
-          <a class="button secondary" href="https://github.com/shahinesi/powerbi-persian-date-picker/blob/master/docs/INSTALLATION.md">راهنمای نصب</a>
+          <a class="button primary" href="https://raw.githubusercontent.com/shahinesi/powerbi-persian-date-picker/main/release/PersianDatePicker.pbiviz">دانلود PBIVIZ</a>
+          <a class="button secondary" href="docs.html">راهنمای صفر تا صد</a>
         </div>
-        <div class="micro"><span>بدون API خارجی</span><span>بدون Storage</span><span>بدون AAD</span><span>CodeQL + Audit</span></div>
+        <div class="micro"><span>بدون API خارجی</span><span>بدون Storage</span><span>بدون AAD</span><span>RTL / Jalali</span><span>CodeQL + Audit</span></div>
       </div>
 
       <div class="visual-demo" aria-label="نمونه نمای تقویم">
@@ -54,56 +54,71 @@
       </div>
     </section>
 
-    <section class="metrics shell" aria-label="ویژگی‌های کلیدی">
-      <div><strong>Jalali</strong><span>UI کاملاً شمسی و RTL</span></div>
+    <section class="metrics shell">
+      <div><strong>Jalali UI</strong><span>تقویم شمسی و RTL</span></div>
+      <div><strong>Gregorian Model</strong><span>Date / DateTime واقعی</span></div>
       <div><strong>Native Filter</strong><span>Power BI AdvancedFilter</span></div>
       <div><strong>DateTime-safe</strong><span>[start, next-day)</span></div>
-      <div><strong>0 Web Privilege</strong><span>بدون ارسال داده</span></div>
     </section>
 
     <section class="section shell" id="install">
-      <div class="section-heading"><span>01</span><div><h2>نصب در کمتر از یک دقیقه</h2><p>فایل آماده‌ی CI را بگیر و مستقیم داخل Power BI وارد کن.</p></div></div>
+      <div class="section-heading"><span>01</span><div><h2>نصب برای کاربر نهایی</h2><p>نه npm، نه کدنویسی؛ فقط یک فایل PBIVIZ.</p></div></div>
       <div class="steps">
-        <article><b>۱</b><h3>دانلود</h3><p><code>PersianDatePicker.pbiviz</code> را از repo دانلود کن.</p></article>
-        <article><b>۲</b><h3>Import</h3><p>Visualizations → ... → Import a visual from a file.</p></article>
-        <article><b>۳</b><h3>Bind Date</h3><p>یک ستون واقعی Date یا DateTime به فیلد Date بده.</p></article>
-        <article><b>۴</b><h3>انتخاب شمسی</h3><p>کاربر تاریخ شمسی را انتخاب می‌کند؛ مدل میلادی فیلتر می‌شود.</p></article>
+        <article><b>۱</b><h3>دانلود</h3><p>فایل <code>PersianDatePicker.pbiviz</code> را از release همین repository بگیر.</p></article>
+        <article><b>۲</b><h3>Import</h3><p>در Power BI: Visualizations → ... → Import a visual from a file.</p></article>
+        <article><b>۳</b><h3>اختصاص Date</h3><p>یک ستون واقعی <code>Date</code> یا <code>Date/Time</code> را به Field مربوطه بده.</p></article>
+        <article><b>۴</b><h3>استفاده</h3><p>کاربر تاریخ شمسی را انتخاب می‌کند و گزارش با تاریخ Gregorian متناظر فیلتر می‌شود.</p></article>
       </div>
+      <div class="callout info"><strong>اولین بار است؟</strong><span>راهنمای <a href="docs.html#getting-started">قدم‌به‌قدم نصب و تست اولیه</a> را باز کن؛ حتی نحوه انتخاب ستون درست را توضیح داده‌ایم.</span></div>
     </section>
 
-    <section class="section architecture shell" id="architecture">
-      <div class="section-heading"><span>02</span><div><h2>معماری ساده، قرارداد روشن</h2><p>شمسی فقط لایه‌ی تعامل است؛ Gregorian حقیقت مدل باقی می‌ماند.</p></div></div>
+    <section class="section shell" id="how">
+      <div class="section-heading"><span>02</span><div><h2>دقیقاً چه چیزی تبدیل می‌شود؟</h2><p>خود دیتاست تبدیل نمی‌شود؛ فقط انتخاب کاربر.</p></div></div>
       <div class="flow" dir="ltr">
-        <div>Jalali UI<small>1405/05/28</small></div><i>→</i><div>Calendar conversion<small>Gregorian day</small></div><i>→</i><div>UTC boundaries<small>00:00 → next day</small></div><i>→</i><div>Power BI Filter<small>AdvancedFilter</small></div>
+        <div>Jalali UI<small>1405/05/28</small></div><i>→</i><div>Convert selection<small>Gregorian day</small></div><i>→</i><div>UTC boundaries<small>start → next day</small></div><i>→</i><div>Power BI Filter<small>Date/DateTime field</small></div>
       </div>
-      <div class="code-card" dir="ltr"><span>column &gt;= 2026-08-19T00:00:00.000Z</span><span>column &lt;&nbsp; 2026-08-20T00:00:00.000Z</span></div>
+      <div class="code-card" dir="ltr"><span>DateColumn &gt;= 2026-08-19T00:00:00.000Z</span><span>DateColumn &lt;&nbsp; 2026-08-20T00:00:00.000Z</span></div>
+      <div class="callout warn"><strong>ستون شمسی Text داری؟</strong><span>آن را مستقیم به Visual نده. اول یک Gregorian Date واقعی در Source/ETL/Power Query بساز. <a href="docs.html#data-preparation">راهنمای Data Preparation</a>.</span></div>
     </section>
 
-    <section class="section shell" id="quality">
-      <div class="section-heading"><span>03</span><div><h2>قبل از انتشار، باید از این دروازه‌ها رد شود</h2><p>فایل قابل دانلود خروجی مستقیم pipeline است، نه یک binary دستی و ناشناخته.</p></div></div>
+    <section class="section shell">
+      <div class="section-heading"><span>03</span><div><h2>برای چه مدل‌هایی مناسب است؟</h2><p>از گزارش ساده تا مدل ستاره‌ای چند Fact.</p></div></div>
       <div class="quality-grid">
-        <article><h3>TypeScript</h3><p>API/type contract با <code>tsc --noEmit</code>.</p></article>
-        <article><h3>Date Tests</h3><p>تبدیل Jalali ↔ Gregorian و مرز روز بعد.</p></article>
-        <article><h3>Production Audit</h3><p>High/Critical production vulnerabilities بلوکه می‌شوند.</p></article>
-        <article><h3>PBIVIZ Package</h3><p>Lint، capabilities و bundle واقعی Power BI.</p></article>
-        <article><h3>CodeQL</h3><p>Static security analysis برای JS/TS.</p></article>
-        <article><h3>Artifact Publish</h3><p>خروجی نهایی در <code>release/</code> ثبت می‌شود.</p></article>
+        <article><h3>مدل ساده</h3><p><code>Sales[SaleDate]</code> را مستقیم بده.</p></article>
+        <article><h3>Star Schema</h3><p>ترجیحاً <code>DimDate[Date]</code> را به Picker متصل کن.</p></article>
+        <article><h3>DateTime</h3><p>تمام timestampهای همان روز با بازه‌ی کامل روز پوشش داده می‌شوند.</p></article>
+        <article><h3>DirectQuery</h3><p>Visual فقط Filter می‌دهد؛ Query execution تابع مدل و Source است.</p></article>
+        <article><h3>RLS</h3><p>Picker امنیت را دور نمی‌زند و فقط داده قابل مشاهده را محدودتر می‌کند.</p></article>
+        <article><h3>Bookmarks</h3><p>انتخاب از Power BI Filter State بازیابی می‌شود.</p></article>
       </div>
     </section>
 
     <section class="section shell docs-panel">
-      <div><span class="eyebrow">Documentation</span><h2>برای استفاده تا توسعه، همه‌چیز مستند شده</h2><p>Installation، Design Doc، Architecture، ADR، Threat Model، Upstream strategy، Release و Troubleshooting.</p></div>
+      <div><span class="eyebrow">Complete documentation</span><h2>راهنمای واقعی، نه یک README کوتاه</h2><p>نصب، آماده‌سازی داده، مدل‌سازی، Binding، نحوه تبدیل، DateTime، DimDate، Bookmark، Service، DirectQuery، RLS، Troubleshooting، FAQ و توسعه.</p></div>
       <div class="doc-links">
-        <a href="https://github.com/shahinesi/powerbi-persian-date-picker/blob/master/docs/README.md">Documentation Index <span>↗</span></a>
-        <a href="https://github.com/shahinesi/powerbi-persian-date-picker/blob/master/docs/ARCHITECTURE.md">Architecture <span>↗</span></a>
-        <a href="https://github.com/shahinesi/powerbi-persian-date-picker/tree/master/docs/adr">ADRs <span>↗</span></a>
-        <a href="https://github.com/shahinesi/powerbi-persian-date-picker/blob/master/SECURITY.md">Security <span>↗</span></a>
+        <a href="docs.html#getting-started">شروع از صفر <span>←</span></a>
+        <a href="docs.html#data-model">انتخاب Data Model <span>←</span></a>
+        <a href="docs.html#data-preparation">آماده‌سازی داده <span>←</span></a>
+        <a href="docs.html#troubleshooting">رفع خطا <span>←</span></a>
+        <a href="https://github.com/shahinesi/powerbi-persian-date-picker/tree/main/docs">تمام اسناد فنی <span>↗</span></a>
+      </div>
+    </section>
+
+    <section class="section shell" id="quality">
+      <div class="section-heading"><span>04</span><div><h2>Quality gates</h2><p>فایل دانلودی خروجی pipeline است.</p></div></div>
+      <div class="quality-grid">
+        <article><h3>TypeScript</h3><p><code>tsc --noEmit</code></p></article>
+        <article><h3>Date Tests</h3><p>Jalali ↔ Gregorian و next-day boundary.</p></article>
+        <article><h3>Production Audit</h3><p>High/Critical dependency issues gate می‌شوند.</p></article>
+        <article><h3>PBIVIZ Package</h3><p>Lint + capabilities + production bundle.</p></article>
+        <article><h3>CodeQL</h3><p>Static security analysis.</p></article>
+        <article><h3>Release Artifact</h3><p>خروجی نهایی در <code>release/</code>.</p></article>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="shell footer-inner"><div><strong>Persian Date Picker for Power BI</strong><p>Open-source · MIT · Built on react-multi-date-picker</p></div><div class="footer-links"><a href="https://github.com/shahinesi/powerbi-persian-date-picker">GitHub</a><a href="https://github.com/shahabyazdi/react-multi-date-picker">Upstream</a><a href="https://github.com/shahinesi/powerbi-persian-date-picker/blob/master/LICENSE">License</a></div></div>
+    <div class="shell footer-inner"><div><strong>Persian Date Picker for Power BI</strong><p>Open source · MIT · Built on react-multi-date-picker</p></div><div class="footer-links"><a href="docs.html">Docs</a><a href="https://github.com/shahinesi/powerbi-persian-date-picker">GitHub</a><a href="https://github.com/shahabyazdi/react-multi-date-picker">Upstream</a><a href="https://github.com/shahinesi/powerbi-persian-date-picker/blob/main/LICENSE">License</a></div></div>
   </footer>
 </body>
 </html>
