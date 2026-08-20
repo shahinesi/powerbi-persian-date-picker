@@ -1,5 +1,8 @@
 name: GitHub Pages
 
+# Static documentation site deployment
+# Source directory: site/
+
 on:
   push:
     branches: [master]
