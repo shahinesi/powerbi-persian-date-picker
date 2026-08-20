@@ -1,5 +1,11 @@
-/* Vazirmatn Persian font support */
-@import url('https://cdn.jsdelivr.net/npm/vazirmatn@33.003.0/Vazirmatn-font-face.css');
+/* Vazirmatn Persian font support - local asset */
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("fonts/Vazirmatn-Variable.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
 
 html,
 body,
