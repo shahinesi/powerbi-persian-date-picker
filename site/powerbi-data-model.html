@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Power BI Data Model - Persian Date Picker</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="shell docs-main">
+<h1>مدل داده در Power BI</h1>
+<p>این Visual تاریخ شمسی را برای انتخاب کاربر نمایش می‌دهد، اما فیلتر نهایی روی تاریخ واقعی Gregorian مدل اعمال می‌شود.</p>
+<h2>مدل پیشنهادی</h2>
+<pre>FactSales
+  SaleDate (Date)
+        |
+        v
+Persian Date Picker
+        |
+۱۴۰۵/۰۵/۲۸ → 2026-08-19</pre>
+<h2>ستون Text شمسی</h2>
+<p>ستون‌هایی مثل 1405/05/28 نباید مستقیماً برای فیلتر استفاده شوند. ابتدا باید به Date واقعی تبدیل شوند.</p>
+<h2>DateTime</h2>
+<p>برای timestamp از بازه شروع روز تا شروع روز بعد استفاده می‌شود.</p>
+</main>
+</body>
+</html>
